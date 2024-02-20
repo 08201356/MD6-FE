@@ -1,14 +1,16 @@
-
+import React from "react";
 import './App.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import RegisterForm from "./Components/RegisterForm";
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-    </div>
-  );
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<RegisterForm/>}/>
+          </Routes>
+      </BrowserRouter>
+  )
 }
 
 export default App;
