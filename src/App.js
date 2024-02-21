@@ -6,7 +6,7 @@ import Logout from "./Components/logout";
 function App() {
   return (
     <div className="App">
-     <Logout/>
+     <Login/>
     </div>
   );
 }

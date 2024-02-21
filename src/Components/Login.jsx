@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 import {Formik} from "formik";
+import axios from "axios";
 
 const Login = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -17,6 +18,7 @@ const Login = () => {
         });
     }
 
+    const [email, setEmail] = useState([])
     function handleValidate() {
         const errors = {};
         if (!form.email) {
@@ -29,8 +31,14 @@ const Login = () => {
     }
 
     function handleSubmit() {
+        axios.post('http://localhost:8080/api/auth/signin').then(response => {
+            setEmail(response.data)
+        }).catch(error => {
+            console.log(error)
+        })
         alert("Login in successfully!!!");
     }
+
 
     return (
         <section className="relative bg-gray-100 dark:bg-gray-800 h-screen">
