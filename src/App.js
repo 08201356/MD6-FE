@@ -1,13 +1,13 @@
 import React from "react";
 import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import RegisterForm2 from "./Components/RegisterForm2";
+import RegisterForm from "./Components/RegisterForm";
 
 function App() {
   return (
       <BrowserRouter>
           <Routes>
-              <Route path="/" element={<RegisterForm2/>}/>
+              <Route path="/" element={<RegisterForm/>}/>
           </Routes>
       </BrowserRouter>
   )
