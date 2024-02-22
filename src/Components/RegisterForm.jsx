@@ -29,11 +29,11 @@ export default function RegisterForm(){
         } else if (!regex.password.test(form.username)){
             errors.username = "Username must use Lowercase and Uppercase letters and must be at least 6 characters"
         }
-        if(!form.name){
-            errors.name = "Name Required"
-        } else if (!regex.name.test(form.name)){
-            errors.name = "Full name must use Lowercase and Uppercase letters and must be at least 6 characters"
-        }
+        // if(!form.name){
+        //     errors.name = "Name Required"
+        // } else if (!regex.name.test(form.name)){
+        //     errors.name = "Full name must use Lowercase and Uppercase letters and must be at least 6 characters"
+        // }
         if (!form.password) {
             errors.password = "Password Required";
         } else if (!regex.password.test(form.password)){
@@ -42,25 +42,28 @@ export default function RegisterForm(){
         return errors;
     }
     function handleSubmit() {
-        axios.post('http://localhost:8080/api/auth/register', form)
-            .then(response => {
-                toast({
-                    title: 'Register Successful',
-                    description: 'You have successfully registered.',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                });
-            })
-            .catch(error => {
-                toast({
-                    title: 'Register Failed',
-                    description: 'Please check your credentials and try again.',
-                    status: 'error',
-                    duration: 3000,
-                    isClosable: true,
-                });
-            });
+        console.log(form)
+        axios.post("http://localhost:8080/api/auth/signup", form)
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+        //     .then(response => {
+        //         toast({
+        //             title: 'Register Successful',
+        //             description: 'You have successfully registered.',
+        //             status: 'success',
+        //             duration: 3000,
+        //             isClosable: true,
+        //         });
+        //     })
+        //     .catch(error => {
+        //         toast({
+        //             title: 'Register Failed',
+        //             description: 'Please check your credentials and try again.',
+        //             status: 'error',
+        //             duration: 3000,
+        //             isClosable: true,
+        //         });
+        //     });
     }
     return(
         <div>
@@ -105,20 +108,20 @@ export default function RegisterForm(){
                                                    dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                             <p className="text-sm text-red-500">{errors.username}</p>
                                         </div>
-                                        <div className={`custom-input ${
-                                            errors.name ? "custom-input-error" : ""
-                                        }`}>
-                                            <label htmlFor="name" className="text-sm font-medium text-gray-900
-                                                    dark:text-white block text-left ml-6 ">Full name</label>
-                                            <input type="name" id="name" name="name"
-                                                   placeholder="Enter full name"
-                                                   value={form.name || ""} onChange={handleChange}
-                                                   className="hover:bg-gray-200 bg-gray-50 border border-gray-300
-                                                   text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600
-                                                   w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                                   dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                                            <p className="text-sm text-red-500">{errors.name}</p>
-                                        </div>
+                                        {/*<div className={`custom-input ${*/}
+                                        {/*    errors.name ? "custom-input-error" : ""*/}
+                                        {/*}`}>*/}
+                                        {/*    <label htmlFor="name" className="text-sm font-medium text-gray-900*/}
+                                        {/*            dark:text-white block text-left ml-6 ">Full name</label>*/}
+                                        {/*    <input type="name" id="name" name="name"*/}
+                                        {/*           placeholder="Enter full name"*/}
+                                        {/*           value={form.name || ""} onChange={handleChange}*/}
+                                        {/*           className="hover:bg-gray-200 bg-gray-50 border border-gray-300*/}
+                                        {/*           text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600*/}
+                                        {/*           w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400*/}
+                                        {/*           dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>*/}
+                                        {/*    <p className="text-sm text-red-500">{errors.name}</p>*/}
+                                        {/*</div>*/}
                                         <div className={`custom-input ${
                                             errors.password ? "custom-input-error" : ""
                                         }`}>
