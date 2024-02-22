@@ -26,16 +26,18 @@ export default function RegisterForm(){
         }
         if(!form.username){
             errors.username = "Username Required"
-        } else if (!regex.name.test(form.username)){
+        } else if (!regex.password.test(form.username)){
             errors.username = "Username must use Lowercase and Uppercase letters and must be at least 6 characters"
         }
         if(!form.name){
             errors.name = "Name Required"
         } else if (!regex.name.test(form.name)){
-            errors.name = "Username must use Lowercase and Uppercase letters and must be at least 6 characters"
+            errors.name = "Full name must use Lowercase and Uppercase letters and must be at least 6 characters"
         }
         if (!form.password) {
             errors.password = "Password Required";
+        } else if (!regex.password.test(form.password)){
+            errors.password = "Password must be at least 6 characters"
         }
         return errors;
     }
