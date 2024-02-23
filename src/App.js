@@ -1,16 +1,16 @@
-import React from "react";
 import './App.css';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import RegisterForm from "./Components/RegisterForm";
+import Router from "./Route/Router";
+import Login from "./Pages/LoginPage/Login";
+import Logout from "./Pages/LogoutPage/Logout";
+import CreateWorkspace from "./Components/WorkspaceModal/CreateWorkspace";
+import InviteFriendWorkspace from "./Components/WorkspaceModal/InviteFriendWorkspace";
 
 function App() {
   return (
-      <BrowserRouter>
-          <Routes>
-              <Route path="/" element={<RegisterForm/>}/>
-          </Routes>
-      </BrowserRouter>
-  )
+    <div className="App">
+        <Router />
+    </div>
+  );
 }
 
 export default App;
