@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import HomeHeader from "../../Components/HomeHeader/HomeHeader";
 import WorkspaceSidebar from "../../Components/SideBar/WorkspaceSidebar";
 import SidebarConfig from "../../Components/SideBar/SidebarConfig";
@@ -8,6 +8,7 @@ import {useParams} from "react-router-dom";
 import {useDisclosure} from "@chakra-ui/react";
 import InvitePopup from "../../Components/WorkspaceModal/InvitePopup";
 import InvitePopupTwo from "../../Components/WorkspaceModal/InvitePopupTwo";
+import UserContext from "../../Context/UserContext";
 
 
 const Workspace = () => {
@@ -18,22 +19,20 @@ const Workspace = () => {
     const [isInputFilled, setIsInputFilled] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
-    const workspaceNew = JSON.parse(localStorage.getItem('workspaces'));
-    const workspaceId = workspaceNew.id;
 
     const [members, setMembers] = useState([]);
 
     const [workspace, setWorkspace] = useState([]);
-    const [user, setUser] = useState({})
+    const {user,updateUser} = useContext(UserContext);
 
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        setUser(user);
-
-        axios.get(`http://localhost:8080/api/users/${user.id}/workspaces`).then((response) => {
-            setWorkspace(response.data);
-        })
-    }, []);
+    // useEffect(() => {
+    //     const user = JSON.parse(localStorage.getItem('user'));
+    //     setUser(user);
+    //
+    //     axios.get(`http://localhost:8080/api/users/${user.id}/workspaces`).then((response) => {
+    //         setWorkspace(response.data);
+    //     })
+    // }, []);
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -43,28 +42,24 @@ const Workspace = () => {
     };
 
     useEffect(() => {
-        const fetchWorkspaceData = () => {
             axios.get(`http://localhost:8080/api/workspaces/${id}`).then(response => {
-                localStorage.setItem("workspaces", JSON.stringify(response.data));
+                localStorage.setItem("workspace", JSON.stringify(response.data));
             });
-        };
-
-        fetchWorkspaceData();
     }, []);
 
 
-    useEffect(() => {
-        const fetchMembers = () => {
-            axios.get(`http://localhost:8080/api/workspaces/${workspaceId}/members`).then(response => {
-                    setMembers(response.data);
-                }
-            ).catch(error => {
-                console.error('Error fetching members:', error);
-            });
-
-        };
-        fetchMembers();
-    }, [workspaceId]);
+    // useEffect(() => {
+    //     const fetchMembers = () => {
+    //         axios.get(`http://localhost:8080/api/workspaces/${workspaceId}/members`).then(response => {
+    //                 setMembers(response.data);
+    //             }
+    //         ).catch(error => {
+    //             console.error('Error fetching members:', error);
+    //         });
+    //
+    //     };
+    //     fetchMembers();
+    // }, [workspaceId]);
 
     return (
         <div>
@@ -78,11 +73,7 @@ const Workspace = () => {
                 </div>
                 <div className='w-[3%]'></div>
                 <div className='w-[75%]'>
-                    {workspaceData ? (
-                        <WorkspaceMembers onOpen={onOpen} onClose={onClose} members={members} setMembers={setMembers} workspace={workspaceNew}/>
-                    ) : (
-                        <div>Loading...</div>
-                    )}
+                        {/*<WorkspaceMembers onOpen={onOpen} onClose={onClose} members={members} setMembers={setMembers} workspace={workspaceNew}/>*/}
                 </div>
 
                 {/*{isInputFilled ? (*/}
