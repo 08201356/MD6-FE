@@ -11,9 +11,6 @@ import axios from "axios";
 import InviteFriendWorkspace from "./InviteFriendWorkspace";
 import AuthService from "../../Service/auth.service";
 const CreateWorkspaceModal = ({isOpen, onOpen, onClose,workspaceName,setWorkspaceName,workspaceType,setWorkspaceType,workspaceDescription,setWorkspaceDescription}) => {
-    // const [workspaceName, setWorkspaceName] = useState("");
-    // const [workspaceType, setWorkspaceType] = useState("");
-    // const [workspaceDescription, setWorkspaceDescription] = useState("");
     const isButtonDisabled = !workspaceName || !workspaceType;
 
     const secondModalDisclosure = useDisclosure()

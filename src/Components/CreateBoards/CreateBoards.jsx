@@ -17,12 +17,14 @@ const CreateBoards = ({user, workspace}) => {
     const [boardVisibility, setBoardVisibility] = useState([]);
     const [selectedVisibility, setSelectedVisibility] = useState('');
 
+    console.log(selectedVisibility)
+
     const handleCreateBoard = () => {
         axios.post('http://localhost:8080/api/boards/create',{
             email: user.email,
             title: boardTitle,
             workspaceId: selectedWorkspaceId,
-            visibility: ['public']
+            visibility: [selectedVisibility],
         }).then(res => {
             toast({
                 title: 'Create Board Successful',
@@ -97,7 +99,7 @@ const CreateBoards = ({user, workspace}) => {
                     onChange={(e) => setSelectedVisibility(e.target.value)}
                 >
                     {boardVisibility.map((type) => (
-                        <option key={type.id} value={type.id}>{type.name}</option>
+                        <option key={type.id} value={type.name}>{type.name}</option>
                     ) )}
 
                 </Select>

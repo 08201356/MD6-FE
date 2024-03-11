@@ -32,14 +32,15 @@ const BoardContentPage = () => {
         const storedBoard = localStorage.getItem('board');
 
         if (storedBoard) {
+            console.log("store board: ", storedBoard)
             updateBoard(JSON.parse(storedBoard));
         }
 
         board.columns = mapOrder(board.columns, board.columnOrderIds, 'id')
         board.columns.forEach(column => {
-            if (!isEmpty(column.cards)) {
-                column.cards = mapOrder(column.cards, column.cardOrderIds, 'id')
-            }
+
+                column.cards = mapOrder(column?.cards, column?.cardOrderIds, 'id')
+
         })
     }, []);
 
