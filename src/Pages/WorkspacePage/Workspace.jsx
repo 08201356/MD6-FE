@@ -17,9 +17,6 @@ const Workspace = () => {
     const [isInputFilled, setIsInputFilled] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
-    const workspaceNew = JSON.parse(localStorage.getItem('workspaces'));
-    const workspaceId = workspaceNew.id;
-
     const [members, setMembers] = useState([]);
 
     const [workspace, setWorkspace] = useState([]);
@@ -34,12 +31,12 @@ const Workspace = () => {
         })
     }, []);
 
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setInputValue(value);
-        // Kiểm tra xem giá trị input có khớp với điều kiện không
-        setIsInputFilled(value.includes('@gmail.com'));
-    };
+    // const handleInputChange = (e) => {
+    //     const value = e.target.value;
+    //     setInputValue(value);
+    //     // Kiểm tra xem giá trị input có khớp với điều kiện không
+    //     setIsInputFilled(value.includes('@gmail.com'));
+    // };
 
     useEffect(() => {
         const fetchWorkspaceData = () => {
@@ -54,7 +51,7 @@ const Workspace = () => {
 
     useEffect(() => {
         const fetchMembers = () => {
-            axios.get(`http://localhost:8080/api/workspaces/${workspaceId}/members`).then(response => {
+            axios.get(`http://localhost:8080/api/workspaces/${id}/members`).then(response => {
                     setMembers(response.data);
                 }
             ).catch(error => {
@@ -63,7 +60,7 @@ const Workspace = () => {
 
         };
         fetchMembers();
-    }, [workspaceId]);
+    }, [id]);
 
     return (
         <div>
@@ -77,7 +74,7 @@ const Workspace = () => {
                 </div>
                 <div className='w-[3%]'></div>
                 <div className='w-[75%]'>
-                    <WorkspaceMembers onOpen={onOpen} onClose={onClose} members={members} setMembers={setMembers} workspace={workspaceNew}/>
+                    <WorkspaceMembers onOpen={onOpen} onClose={onClose} members={members} setMembers={setMembers}/>
                 </div>
 
                 <InvitePopupTwo isOpen={isOpen} onOpen={onOpen} onClose={onClose} />

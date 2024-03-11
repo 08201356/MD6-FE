@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {IoAppsSharp} from "react-icons/io5";
 import Dropdown from "./Dropdown";
 import {TbBellRinging2} from "react-icons/tb";
@@ -12,17 +12,20 @@ import {
     MenuItem,
     MenuList
 } from "@chakra-ui/react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {RiShareBoxLine} from "react-icons/ri";
 import {BiGroup} from "react-icons/bi";
 import {BsTrello} from "react-icons/bs";
 import {GrAdd} from "react-icons/gr";
-import axios from "axios";
-import logout from "../../Pages/LogoutPage/Logout";
+import WorkspaceContext from "../../Context/WorkspaceContext";
+import UserContext from "../../Context/UserContext";
 
-const HomeHeader = ({onOpen, onClose, workspace}) => {
-    const [user, setUser] = useState({});
+const HomeHeader = ({onOpen, onClose}) => {
+    const [userLogin, setUserLogin] = useState({});
+    const {user, updateUser} = useContext(UserContext);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
+    const navigate = useNavigate();
+    const {workspace, updateWorkspace} = useContext(WorkspaceContext);
 
     useEffect(() => {
         const handleResize = () => {
@@ -37,13 +40,19 @@ const HomeHeader = ({onOpen, onClose, workspace}) => {
     }, []);
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        setUser(user);
+        const users = JSON.parse(localStorage.getItem('user'));
+        setUserLogin(users);
     }, []);
 
     const handleCreate = () => {
         onOpen()
     }
+
+    const handleWorkspaceClick = (item) => {
+        updateWorkspace(item)
+        localStorage.setItem('workspace', JSON.stringify(item));
+        navigate(`/workspace/${item.id}`);
+    };
 
     return (
         <div className='bg-white border-gray-200  w-full lg:px-6 py-1'>
@@ -70,25 +79,24 @@ const HomeHeader = ({onOpen, onClose, workspace}) => {
 
                                 <p className="text-sm flex ml-3">Your Workspaces</p>
 
-                                {/*{workspace.map((item) => (*/}
-                                {/*    <MenuItem key={item.id}>*/}
-                                {/*        <Link to={`/workspace/${item.id}`}>*/}
-                                {/*            <div className='flex'>*/}
-                                {/*                <Avatar size='sm' borderRadius='md' name={item.name} src=''/>*/}
-                                {/*                <p className='text-base font-medium ml-2 mt-1'>{item.name}</p>*/}
-                                {/*            </div>*/}
-                                {/*        </Link>*/}
-                                {/*    </MenuItem>*/}
-                                {/*))}*/}
+                                {user.ownedWorkspaces.map((item) => (
+                                    <MenuItem key={item.id}>
+                                            <div className='flex cursor-pointer ' onClick={() => handleWorkspaceClick(item)}>
+                                                <Avatar size='sm' borderRadius='md' name={item.name} src=''/>
+                                                <p className='text-base font-medium ml-2 mt-1'>{item.name}</p>
+                                            </div>
+
+                                    </MenuItem>
+                                ))}
                                 <p className="text-sm flex ml-3">Guest Workspaces</p>
-                                <MenuItem>
-                                    <Link to='/workspace/2'>
-                                        <div className='flex'>
-                                            <Avatar size='sm' borderRadius='md' name={user.username} src=''/>
-                                            <p className='text-base font-medium ml-2 mt-1'>{user.username}</p>
-                                        </div>
-                                    </Link>
-                                </MenuItem>
+                                {/*<MenuItem>*/}
+                                {/*    <Link to='/workspace/2'>*/}
+                                {/*        <div className='flex'>*/}
+                                {/*            <Avatar size='sm' borderRadius='md' name={user.username} src=''/>*/}
+                                {/*            <p className='text-base font-medium ml-2 mt-1'>{user.username}</p>*/}
+                                {/*        </div>*/}
+                                {/*    </Link>*/}
+                                {/*</MenuItem>*/}
                             </MenuList>
                         </Menu>
 
@@ -178,16 +186,16 @@ const HomeHeader = ({onOpen, onClose, workspace}) => {
                                 borderRadius='full'
                                 _hover={{bg: 'gray.200'}}
                             >
-                                <Avatar size='sm' name={user.username} src={user.avatarUrl}/>
+                                <Avatar size='sm' name={userLogin.username} src={userLogin.avatarUrl}/>
                             </MenuButton>
 
                             <MenuList className='mt-1.5'>
                                 <MenuGroup className='font-medium' title='Account'>
                                     <MenuItem pointerEvents={'none'}>
-                                        <Avatar size='sm' name={user.username} src={user.avatarUrl}/>
+                                        <Avatar size='sm' name={userLogin.username} src={userLogin.avatarUrl}/>
                                         <div className='ml-2'>
-                                            <p className='text-base font-medium'>{user.username}</p>
-                                            <p className='text-sm'>{user.email}</p>
+                                            <p className='text-base font-medium'>{userLogin.username}</p>
+                                            <p className='text-sm'>{userLogin.email}</p>
                                         </div>
                                     </MenuItem>
                                     <MenuItem>Switch accounts</MenuItem>

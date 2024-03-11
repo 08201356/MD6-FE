@@ -12,7 +12,6 @@ import InviteFriendWorkspace from "./InviteFriendWorkspace";
 import AuthService from "../../Service/auth.service";
 const CreateWorkspaceModal = ({isOpen, onOpen, onClose,workspaceName,setWorkspaceName,workspaceType,setWorkspaceType,workspaceDescription,setWorkspaceDescription}) => {
     const isButtonDisabled = !workspaceName || !workspaceType;
-
     const secondModalDisclosure = useDisclosure()
     const [workspaceTypes, setWorkspaceTypes] = useState([]);
     const user = AuthService.getCurrentUser();

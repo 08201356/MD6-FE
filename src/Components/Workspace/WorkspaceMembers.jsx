@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Avatar, Button, Menu, MenuButton, MenuItem, MenuList, useDisclosure} from "@chakra-ui/react";
 import {FaLink} from "react-icons/fa";
 import {AiOutlineUserAdd} from "react-icons/ai";
@@ -6,13 +6,21 @@ import {MdCheckCircleOutline} from "react-icons/md";
 import axios from "axios";
 import {IoIosClose} from "react-icons/io";
 import InvitePopup from "../WorkspaceModal/InvitePopup";
+import WorkspaceContext from "../../Context/WorkspaceContext";
 
 
-const WorkspaceMembers = ({onOpen,onClose, members, setMembers, workspace}) => {
-    const workspaceId = workspace.id;
+const WorkspaceMembers = ({onOpen,onClose, members, setMembers}) => {
     const [showNotification, setShowNotification] = useState(true);
     const [selectedOption, setSelectedOption] = useState("workspaceMembers");
+    const { workspace, updateWorkspace } = useContext(WorkspaceContext);
 
+    useEffect(() => {
+        const storedWorkspace = localStorage.getItem('workspace');
+
+        if (storedWorkspace) {
+            updateWorkspace(JSON.parse(storedWorkspace));
+        }
+    }, []);
     const handleClick = (option) => {
         setSelectedOption(option);
     };
@@ -129,84 +137,84 @@ const WorkspaceMembers = ({onOpen,onClose, members, setMembers, workspace}) => {
                     </div>
 
                     <hr className='border-1-slate-500 py-1 w-full mt-4'/>
-                    {members.map((users, index) => (
-                        <div key={index} className='mt-2'>
-                            <div className='flex justify-between items-center'>
-                                <div className='flex'>
-                                    <Avatar className='mt-1' size='sm' src={users.user.avatarUrl}
-                                            name={users.user.username}/>
-                                    <div className='ml-2'>
-                                        <p className='text-base font-medium'>{users.user.username}</p>
-                                        <p className='text-sm'>{users.user.email}</p>
-                                    </div>
-                                </div>
+                    {/*{members.map((users, index) => (*/}
+                    {/*    <div key={index} className='mt-2'>*/}
+                    {/*        <div className='flex justify-between items-center'>*/}
+                    {/*            <div className='flex'>*/}
+                    {/*                <Avatar className='mt-1' size='sm' src={users.user.avatarUrl}*/}
+                    {/*                        name={users.user.username}/>*/}
+                    {/*                <div className='ml-2'>*/}
+                    {/*                    <p className='text-base font-medium'>{users.user.username}</p>*/}
+                    {/*                    <p className='text-sm'>{users.user.email}</p>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
 
-                                <div className='flex space-x-6 items-center'>
-                                    <div>
-                                        <p className='mt-1'>On 0 boards</p>
-                                    </div>
+                    {/*            <div className='flex space-x-6 items-center'>*/}
+                    {/*                <div>*/}
+                    {/*                    <p className='mt-1'>On 0 boards</p>*/}
+                    {/*                </div>*/}
 
-                                    <div>
-                                        <Button variant='outline'>{users.role}</Button>
-                                    </div>
+                    {/*                <div>*/}
+                    {/*                    <Button variant='outline'>{users.role}</Button>*/}
+                    {/*                </div>*/}
 
-                                    <div>
-                                        <Menu>
-                                            {users.role === 'ROLE_ADMIN' ? (
-                                                <MenuButton
-                                                    px={5}
-                                                    py={2}
-                                                    transition='all 0.2s'
-                                                    borderRadius='md'
-                                                    borderWidth='1px'
-                                                    _hover={{bg: 'gray.400'}}
-                                                    _expanded={{bg: 'gray.400'}}
-                                                    _focus={{boxShadow: 'outline'}}
-                                                >
-                                                    <div className='flex'>
-                                                        <IoIosClose className='mt-1'/>Leave
-                                                    </div>
-                                                </MenuButton>
-                                            ) : (
-                                                <MenuButton
-                                                    px={4}
-                                                    py={2}
-                                                    transition='all 0.2s'
-                                                    borderRadius='md'
-                                                    borderWidth='1px'
-                                                    _hover={{bg: 'gray.400'}}
-                                                    _expanded={{bg: 'gray.400'}}
-                                                    _focus={{boxShadow: 'outline'}}
-                                                >
-                                                    <div className='flex'>
-                                                        <IoIosClose className='mt-1'/>Remove
-                                                    </div>
-                                                </MenuButton>
-                                            )}
-                                            <MenuList>
-                                                <MenuItem onClick={() => handleRemoveMember(users.id)}>
-                                                    <div className="">
-                                                        <p>Remove from Workspace</p>
-                                                        <p className='text-sm'>Remove all access to the Workspace</p>
-                                                    </div>
-                                                </MenuItem>
+                    {/*                <div>*/}
+                    {/*                    <Menu>*/}
+                    {/*                        {users.role === 'ROLE_ADMIN' ? (*/}
+                    {/*                            <MenuButton*/}
+                    {/*                                px={5}*/}
+                    {/*                                py={2}*/}
+                    {/*                                transition='all 0.2s'*/}
+                    {/*                                borderRadius='md'*/}
+                    {/*                                borderWidth='1px'*/}
+                    {/*                                _hover={{bg: 'gray.400'}}*/}
+                    {/*                                _expanded={{bg: 'gray.400'}}*/}
+                    {/*                                _focus={{boxShadow: 'outline'}}*/}
+                    {/*                            >*/}
+                    {/*                                <div className='flex'>*/}
+                    {/*                                    <IoIosClose className='mt-1'/>Leave*/}
+                    {/*                                </div>*/}
+                    {/*                            </MenuButton>*/}
+                    {/*                        ) : (*/}
+                    {/*                            <MenuButton*/}
+                    {/*                                px={4}*/}
+                    {/*                                py={2}*/}
+                    {/*                                transition='all 0.2s'*/}
+                    {/*                                borderRadius='md'*/}
+                    {/*                                borderWidth='1px'*/}
+                    {/*                                _hover={{bg: 'gray.400'}}*/}
+                    {/*                                _expanded={{bg: 'gray.400'}}*/}
+                    {/*                                _focus={{boxShadow: 'outline'}}*/}
+                    {/*                            >*/}
+                    {/*                                <div className='flex'>*/}
+                    {/*                                    <IoIosClose className='mt-1'/>Remove*/}
+                    {/*                                </div>*/}
+                    {/*                            </MenuButton>*/}
+                    {/*                        )}*/}
+                    {/*                        <MenuList>*/}
+                    {/*                            <MenuItem onClick={() => handleRemoveMember(users.id)}>*/}
+                    {/*                                <div className="">*/}
+                    {/*                                    <p>Remove from Workspace</p>*/}
+                    {/*                                    <p className='text-sm'>Remove all access to the Workspace</p>*/}
+                    {/*                                </div>*/}
+                    {/*                            </MenuItem>*/}
 
-                                                <MenuItem>
-                                                    <div className="">
-                                                        <p>Deactivate</p>
-                                                        <p className='text-sm'>Disable member's access to Workspace boards,
-                                                            but <br/> allow other Workspace members to see what
-                                                            cards <br/> and boards the member was on.</p>
-                                                    </div>
-                                                </MenuItem>
-                                            </MenuList>
-                                        </Menu>
-                                    </div>
-                                </div>
-                            </div>
+                    {/*                            <MenuItem>*/}
+                    {/*                                <div className="">*/}
+                    {/*                                    <p>Deactivate</p>*/}
+                    {/*                                    <p className='text-sm'>Disable member's access to Workspace boards,*/}
+                    {/*                                        but <br/> allow other Workspace members to see what*/}
+                    {/*                                        cards <br/> and boards the member was on.</p>*/}
+                    {/*                                </div>*/}
+                    {/*                            </MenuItem>*/}
+                    {/*                        </MenuList>*/}
+                    {/*                    </Menu>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
 
-                        </div>
-                    ))}
+                    {/*    </div>*/}
+                    {/*))}*/}
                     <hr className='border-1-slate-500 py-1 w-full mt-4'/>
                 </div>
             </div>

@@ -11,14 +11,13 @@ import CopyLinkButton from "./CopyLinkButton";
 import { FaLink } from "react-icons/fa6";
 import { MdCheckCircleOutline } from "react-icons/md";
 import axios from "axios";
+import {useParams} from "react-router-dom";
 
 const InvitePopupTwo = ({onOpen,onClose,isOpen}) => {
+    const { id } = useParams();
     const [showNotification, setShowNotification] = useState(true);
     const [workspaceEmail, setWorkspaceEmail] = useState('');
     const [suggestedEmails, setSuggestedEmails] = useState([]);
-    const workspace = JSON.parse(localStorage.getItem('workspaces'));
-    const workspaceId = workspace.id
-
 
     const hideNotification = () => {
         setShowNotification(true);
@@ -42,7 +41,7 @@ const InvitePopupTwo = ({onOpen,onClose,isOpen}) => {
     };
 
     const handleInvite = () => {
-        axios.post(`http://localhost:8080/api/workspaces/${workspaceId}/addUser/${workspaceEmail}`)
+        axios.post(`http://localhost:8080/api/workspaces/${id}/addUser/${workspaceEmail}`)
             .then(response => {
                 onClose();
                 setWorkspaceEmail('')

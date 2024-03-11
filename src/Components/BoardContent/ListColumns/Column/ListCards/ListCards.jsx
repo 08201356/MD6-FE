@@ -7,11 +7,11 @@ import CardContent from "./CardContent/CardContent";
 const ListCards = ({cards}) => {
     return (
         <SortableContext items={cards?.map(c => c.id)} strategy={verticalListSortingStrategy}>
-        <div>
-            {cards?.map((card) => (
-                <CardContent key={card.id} card={card}/>
-            ))}
-        </div>
+            <div>
+                {cards?.map((card) => (
+                    <CardContent key={card.id} card={card} />
+                ))}
+            </div>
         </SortableContext>
     );
 };

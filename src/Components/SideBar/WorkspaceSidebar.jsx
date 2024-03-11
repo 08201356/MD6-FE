@@ -1,9 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Avatar} from "@chakra-ui/react";
 import WorkspaceSidebarConfig from "./WorkspaceSidebarConfig";
+import BoardContext from "../../Context/BoardContext";
+import WorkspaceContext from "../../Context/WorkspaceContext";
 
 const WorkspaceSidebar = () => {
-    const workspace = JSON.parse(localStorage.getItem('workspaces'));
+    const { workspace, updateWorkspace } = useContext(WorkspaceContext);
+
+    useEffect(() => {
+        const storedWorkspace = localStorage.getItem('workspace');
+
+        if (storedWorkspace) {
+            updateWorkspace(JSON.parse(storedWorkspace));
+        }
+    }, []);
     return (
         <div className='flex flex-col items-start' >
             <div className="flex mt-4 ml-4">

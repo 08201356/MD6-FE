@@ -4,7 +4,7 @@ import Column from "./Column/Column";
 import CreateColumnButton from "./NewColumn/CreateColumnButton";
 import CreateNewColumnForm from "./NewColumn/CreateNewColumnForm";
 
-const ListColumns = ({columns, setColumns}) => {
+const ListColumns = ({columns, setColumns }) => {
     const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
     const [cardOfColumn, setCardOfColumn] = useState([]);
     const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
@@ -25,7 +25,7 @@ const ListColumns = ({columns, setColumns}) => {
         <SortableContext items={columns?.map(c => c.id)} strategy={horizontalListSortingStrategy}>
             <div className='flex space-x-4'>
                 {columns?.map((column) => (
-                    <Column key={column.id} column={column} setColumn={updateColumn}/>
+                    <Column key={column.id} column={column} setColumn={updateColumn} />
                 ))}
             </div>
             {!openNewColumnForm ? <CreateColumnButton toggle={toggleOpenNewColumnForm}/> :

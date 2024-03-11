@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Button,
     Select, useToast
@@ -7,7 +7,8 @@ import {IoChevronBack} from "react-icons/io5";
 import {IoMdClose} from "react-icons/io";
 import {PiHandWaving} from "react-icons/pi";
 import axios from "axios";
-import workspace from "../../Pages/WorkspacePage/Workspace";
+import {useNavigate} from "react-router-dom";
+
 
 const CreateBoards = ({user, workspace}) => {
     const [boardTitle, setBoardTitle] = useState("")
@@ -16,15 +17,14 @@ const CreateBoards = ({user, workspace}) => {
     const toast = useToast();
     const [boardVisibility, setBoardVisibility] = useState([]);
     const [selectedVisibility, setSelectedVisibility] = useState('');
-
-    console.log(selectedVisibility)
+    const navigate = useNavigate();
 
     const handleCreateBoard = () => {
         axios.post('http://localhost:8080/api/boards/create',{
             email: user.email,
             title: boardTitle,
             workspaceId: selectedWorkspaceId,
-            visibility: [selectedVisibility],
+            visibility: [selectedVisibility]
         }).then(res => {
             toast({
                 title: 'Create Board Successful',
@@ -33,6 +33,8 @@ const CreateBoards = ({user, workspace}) => {
                 duration: 3000,
                 isClosable: true,
             })
+            localStorage.setItem('board', JSON.stringify(res.data));
+            navigate(`/board/${res.data.id}`);
         })
             .catch(error => {
                 console.error("Error creating workspace:", error);
@@ -49,7 +51,6 @@ const CreateBoards = ({user, workspace}) => {
         axios.get("http://localhost:8080/api/boards/visibility")
             .then(response => {
                setBoardVisibility(response.data);
-                console.log(response.data);
             })
             .catch(error => {
                 console.error("Error fetching board visibility:", error);

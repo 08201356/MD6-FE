@@ -35,13 +35,16 @@ const InvitePopup = ({ isOpen, onOpen, onClose, showNotification, setShowNotific
             });
         setWorkspaceEmail(query);
     };
+
+    const handleEmailClick = (email) => {
+        setWorkspaceEmail(email);
+    };
+
     const handlePopupClose = () => {
         setWorkspaceEmail("");
         onClose();
     };
-    const handleEmailClick = (email) => {
-        setWorkspaceEmail(email);
-    };
+
     return (
         <div>
             <Modal size={"xl"} onClose={handlePopupClose} isOpen={isOpen} isCentered>
