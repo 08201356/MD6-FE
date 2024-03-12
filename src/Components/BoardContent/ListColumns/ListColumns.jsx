@@ -6,7 +6,6 @@ import CreateNewColumnForm from "./NewColumn/CreateNewColumnForm";
 
 const ListColumns = ({columns, setColumns }) => {
     const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
-    const [cardOfColumn, setCardOfColumn] = useState([]);
     const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
     const handleCreateList = (title) => {

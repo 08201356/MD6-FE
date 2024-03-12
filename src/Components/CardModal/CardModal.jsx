@@ -52,7 +52,6 @@ const CardModal = ({onOpen,onClose,isOpen,toggleVisibility,card,showMembers}) =>
     }, []);
 
     useEffect(() => {
-        // Gọi phương thức GET để lấy các đường dẫn từ cardId 1
         CardService.getAttachmentUrl(card.id)
             .then(response => {
                 const existingPaths = response.data;
@@ -114,11 +113,11 @@ const CardModal = ({onOpen,onClose,isOpen,toggleVisibility,card,showMembers}) =>
             } catch (error) {
                 console.error('Error uploading or fetching file information:', error);
             } finally {
-                isUploading = false; // Đảm bảo thiết lập lại biến kiểm tra sau khi quá trình hoàn thành hoặc gặp lỗi
+                isUploading = false;
             }
         } else {
             alert('Please select a file.');
-            isUploading = false; // Đảm bảo thiết lập lại biến kiểm tra trong trường hợp không có file được chọn
+            isUploading = false;
         }
     };
 

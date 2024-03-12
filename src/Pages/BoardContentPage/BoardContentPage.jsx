@@ -19,6 +19,7 @@ import BoardContext from "../../Context/BoardContext";
 import BoardBar from "../../Components/SideBar/BoardBar";
 import BoardService from "../../Service/BoardService";
 import ColumnService from "../../Service/ColumnService";
+import socket, {useSocket} from "../../Socket/WebSocketComponent";
 const ACTIVE_DRAG_ITEM_TYPE = {
     COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
     CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
@@ -103,12 +104,6 @@ const BoardContentPage = () => {
         updateBoard(newBoard)
         localStorage.setItem('board', JSON.stringify(newBoard));
 
-        console.log("Current card ", currentCardId)
-        console.log("Prev ", dndOrderedColumns.find(c => c.id === prevColumnId)?.cards)
-        console.log("Prev ", dndOrderedColumns.find(c => c.id === prevColumnId)?.cardOrderIds)
-        console.log("Next ", dndOrderedColumns.find(c => c.id === nextColumnId)?.cards)
-        console.log("Next ", dndOrderedColumns.find(c => c.id === nextColumnId)?.cardOrderIds)
-
         ColumnService.movingCardToDifferentColumnAPI({
             currentCardId,
             prevColumnId,
@@ -116,6 +111,7 @@ const BoardContentPage = () => {
             nextColumnId,
             nextCardOrderIds: dndOrderedColumns.find(c => c.id === nextColumnId)?.cardOrderIds
         })
+
     }
 
     const findColumnByCardId = (cardId) => {
@@ -293,6 +289,7 @@ const BoardContentPage = () => {
             {/*<div>*/}
             {/*    <BoardBar/>*/}
             {/*</div>*/}
+
             <div className='h-full' style={divStyle}>
                 <DndContext sensors={sensors}
                             collisionDetection={closestCorners}

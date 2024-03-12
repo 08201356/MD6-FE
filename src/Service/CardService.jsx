@@ -1,7 +1,4 @@
 import axios from "axios";
-import workspace from "../Pages/WorkspacePage/Workspace";
-import workspaceSidebar from "../Components/SideBar/WorkspaceSidebar";
-import {date} from "yup";
 
 const API_URL = "http://localhost:8080/api/cards/";
 
@@ -15,11 +12,11 @@ class CardService {
     }
 
     changeCardTitle(cardId,title) {
-        const data = JSON.stringify({ title: title }); // Chuyển đổi dữ liệu thành chuỗi JSON
+        const data = JSON.stringify({ title: title });
 
         return axios.put(`${API_URL}${cardId}`, data, {
             headers: {
-                'Content-Type': 'application/json' // Đảm bảo bạn thiết lập header để cho backend biết rằng dữ liệu gửi đi là JSON
+                'Content-Type': 'application/json'
             }
         }).then(response => {
             return response.data;

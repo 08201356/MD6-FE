@@ -13,6 +13,8 @@ import Workspace from "../Pages/WorkspacePage/Workspace";
 import axios from "axios";
 import BoardContext from "../Context/BoardContext";
 import AttachFileMenu from "../Components/AttachFileMenu/AttachFileMenu";
+import WebSocketComponent from "../Socket/WebSocketComponent";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 
 const Router = () => {
@@ -29,7 +31,9 @@ const Router = () => {
                 <Route path='/manage-profile/*' element={<ManagePage/>}/>
                 <Route path='/logout' element={<Logout/>}/>
                 <Route path='/signup' element={<Signup/>}/>
-                <Route path='/upload' element={<AttachFileMenu/>}/>
+
+                <Route path='/socket' element={<WebSocketComponent/>}/>
+
                 <Route path='/board/:id' element={<BoardContentPage/>}/>
             </Routes>
     );
