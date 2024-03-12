@@ -4,7 +4,7 @@ import {Avatar, AvatarGroup, Button, Card, Input, Tooltip, useDisclosure} from "
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
 import CardService from "../../../../../../Service/CardService";
-import CardModal from "../../../../../../CardModal/CardModal";
+import CardModal from "../../../../../CardModal/CardModal";
 
 const CardContent = ({card}) => {
     const {isOpen, onOpen, onClose} = useDisclosure();

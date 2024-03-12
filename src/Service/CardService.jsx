@@ -36,5 +36,13 @@ class CardService {
         return axios.get(`${API_URL}${cardId}/members`)
     }
 
+    getAttachmentUrl(cardId){
+        return axios.get(`${API_URL}${cardId}/attachment`)
+    }
+
+    updateAttachmentUrl(cardId, data){
+        return axios.put(`${API_URL}${cardId}/attachment`, data)
+    }
+
 }
 export default new CardService();

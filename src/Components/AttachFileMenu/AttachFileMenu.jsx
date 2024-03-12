@@ -1,53 +1,88 @@
 import React, {useEffect, useState} from "react";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
 import {imageDb} from "../../FirebaseImageUpload/Config";
+import CardService from "../../Service/CardService";
 
 
 const AttachFileMenu = ({user, setUser}) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [cardId, setCardId] = useState(1);
 
-    const uploadFile = () => {
+    useEffect(() => {
+        // Gọi phương thức GET để lấy các đường dẫn từ cardId 1
+       CardService.getAttachmentUrl(cardId)
+            .then(response => {
+                const existingPaths = response.data;
+                setUploadedFiles(existingPaths);
+            })
+            .catch(error => {
+                console.error('Error fetching existing paths:', error);
+            });
+    }, [cardId]);
+
+    let isUploading = false;
+
+    const uploadFile = async () => {
+        if (isUploading) {
+            console.log('Upload is already in progress.');
+            return;
+        }
+
+        isUploading = true;
+
         const fileInput = document.getElementById('fileInput');
         const files = fileInput.files;
 
         if (files.length > 0) {
-            // Lưu tất cả các Promise của việc upload vào mảng promises
-            const uploadPromises = Array.from(files).map((file) => {
-                const storageRef = ref(imageDb, `uploads/${file.name}`);
-                return uploadBytes(storageRef, file);
-            });
+            try {
 
-            // Sau khi tất cả các file được upload, lấy đường dẫn và hiển thị thông tin
-            Promise.all(uploadPromises).then(() => {
-                const filesInfoPromises = Array.from(files).map((file) => {
+                const uploadPromises = Array.from(files).map(async (file) => {
                     const storageRef = ref(imageDb, `uploads/${file.name}`);
-                    return getDownloadURL(storageRef).then((downloadURL) => {
-                        return {
-                            downloadURL,
-                            fileName: file.name,
-                            thumbnail:
-                                file.type.startsWith('image/')
-                                    ? URL.createObjectURL(file)
-                                    : 'https://firebasestorage.googleapis.com/v0/b/trelloimageupload.appspot.com/o/uploads%2Fpngwing.com.png?alt=media&token=122f8783-5c85-4cfa-91c8-8e3c0a582cf3',
-                        };
-                    });
+                    await uploadBytes(storageRef, file);
                 });
 
-                // Hiển thị thông tin của các file đã upload
-                Promise.all(filesInfoPromises).then((filesInfo) => {
-                    setUploadedFiles((prevFiles) => prevFiles.concat(filesInfo));
+                await Promise.all(uploadPromises);
+
+                const filesInfoPromises = Array.from(files).map(async (file) => {
+                    const storageRef = ref(imageDb, `uploads/${file.name}`);
+                    const downloadURL = await getDownloadURL(storageRef);
+
+                    return {
+                        downloadURL,
+                        fileName: file.name,
+                        thumbnail: file.type.startsWith('image/')
+                            ? URL.createObjectURL(file)
+                            : 'https://firebasestorage.googleapis.com/v0/b/trelloimageupload.appspot.com/o/uploads%2Fpngwing.com.png?alt=media&token=122f8783-5c85-4cfa-91c8-8e3c0a582cf3',
+                    };
                 });
-            });
+
+                const newFilesInfo = await Promise.all(filesInfoPromises);
+
+                CardService.updateAttachmentUrl(cardId, newFilesInfo)
+                    .then(response => {
+                        console.log('Attachment URLs updated successfully:', response.data);
+                        setUploadedFiles((prevFiles) => prevFiles.concat(newFilesInfo));
+                    })
+                    .catch(error => {
+                        console.error('Error updating attachment URLs:', error);
+                    });
+            } catch (error) {
+                console.error('Error uploading or fetching file information:', error);
+            } finally {
+                isUploading = false; // Đảm bảo thiết lập lại biến kiểm tra sau khi quá trình hoàn thành hoặc gặp lỗi
+            }
         } else {
             alert('Please select a file.');
+            isUploading = false; // Đảm bảo thiết lập lại biến kiểm tra trong trường hợp không có file được chọn
         }
     };
+
 
 
     return (
         <div>
             <h1>File Upload with Firebase</h1>
-            <input type="file" id="fileInput" multiple/>
+            <input type="file" id="fileInput" multiple onChange={uploadFile}/>
             <button onClick={uploadFile}>Upload File</button>
 
             {/* Hiển thị thông tin của các đường dẫn đã upload */}

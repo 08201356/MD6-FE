@@ -290,9 +290,9 @@ const BoardContentPage = () => {
                 <HomeHeader/>
             </div>
 
-            <div>
-                <BoardBar/>
-            </div>
+            {/*<div>*/}
+            {/*    <BoardBar/>*/}
+            {/*</div>*/}
             <div className='h-full' style={divStyle}>
                 <DndContext sensors={sensors}
                             collisionDetection={closestCorners}
